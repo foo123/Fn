@@ -746,6 +746,30 @@ function sprintf( fmt, args )
 }
 sprintf.format_re = /%%|%(\d+\$)?([-+\'#0 ]*)(\*\d+\$|\*|\d+)?(\.(\*\d+\$|\*|\d+))?([scboxXuideEfFgG])/g;
 
+function intersect_sorted2( a, b )
+{
+    var ai = 0, bi = 0, intersection = [ ],
+    al = a.length, bl = b.length;
+    // assume a, b lists are sorted ascending
+    while( ai < al && bi < bl )
+    {
+        if      ( a[ai] < b[bi] )
+        { 
+            ai++; 
+        }
+        else if ( a[ai] > b[bi] )
+        { 
+            bi++; 
+        }
+        else // they're equal
+        {
+            intersection.push( a[ ai ] );
+            ai++; bi++;
+        }
+    }
+    return intersection;
+}
+
 var fn = {
      int: int
     ,float: float
@@ -763,6 +787,7 @@ var fn = {
     ,shuffle: shuffle
     ,pick: pick
     ,kronecker: kronecker
+    ,intersect: intersect_sorted2
     ,get: function( p ) {
         return function( x ){
             return x[ p ];
